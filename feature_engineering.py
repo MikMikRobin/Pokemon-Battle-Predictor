@@ -61,12 +61,14 @@ class FeatureEngineer:
         Returns:
             Effectiveness multiplier
         """
-        if attacker_type == '' or attacker_type == 'None':
+        # Handle empty or NaN attacker type
+        if attacker_type is None or pd.isna(attacker_type) or attacker_type == '' or attacker_type == 'None':
             return 1.0
             
         multiplier = 1.0
         for defender_type in defender_types:
-            if defender_type == '' or defender_type == 'None':
+            # Handle empty or NaN defender type
+            if defender_type is None or pd.isna(defender_type) or defender_type == '' or defender_type == 'None':
                 continue
                 
             if attacker_type in self.type_effectiveness and defender_type in self.type_effectiveness[attacker_type]:

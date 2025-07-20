@@ -7,4 +7,6 @@ shap>=0.39.0
 joblib>=1.0.0
 streamlit>=1.8.0
 pillow>=8.0.0
-tqdm>=4.50.0 
+tqdm>=4.50.0
+imbalanced-learn>=0.8.0
+requests>=2.25.0 

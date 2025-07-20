@@ -25,15 +25,19 @@ class BattleFormat:
 # Model hyperparameters
 RANDOM_FOREST_PARAMS = {
     "n_estimators": 100,
-    "max_depth": 15,
-    "min_samples_split": 10,
-    "min_samples_leaf": 5,
+    "max_depth": 8,  # Reduced from 15 to prevent overfitting
+    "min_samples_split": 20,  # Increased from 10 to prevent overfitting
+    "min_samples_leaf": 10,  # Increased from 5 to prevent overfitting
+    "max_features": "sqrt",  # Added to reduce overfitting
+    "bootstrap": True,  # Ensure bootstrapping is used
+    "class_weight": "balanced",  # Handle class imbalance
     "random_state": RANDOM_SEED
 }
 
 LOGISTIC_REGRESSION_PARAMS = {
-    "C": 1.0,
+    "C": 0.1,  # Reduced from 1.0 to increase regularization
     "penalty": "l2",
     "solver": "liblinear",
+    "class_weight": "balanced",  # Handle class imbalance
     "random_state": RANDOM_SEED
 } 

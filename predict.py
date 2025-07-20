@@ -6,11 +6,13 @@ import pandas as pd
 import numpy as np
 import json
 import os
+import matplotlib.pyplot as plt
 
 import config
 from data_loader import DataLoader
 from feature_engineering import FeatureEngineer
 from models import VGCBattleModel, StandardBattleModel, PokemonBattleModel
+from pokemon_utils import display_battle
 
 def load_pokemon_data():
     """Load and preprocess Pokemon data."""
@@ -127,6 +129,16 @@ def main():
         type=str,
         help="Path to save prediction results as JSON"
     )
+    parser.add_argument(
+        "--show-sprites", 
+        action="store_true",
+        help="Display Pokemon sprites in the battle prediction"
+    )
+    parser.add_argument(
+        "--save-image", 
+        type=str,
+        help="Path to save the battle visualization image"
+    )
     
     args = parser.parse_args()
     
@@ -178,6 +190,25 @@ def main():
         with open(args.output, 'w') as f:
             json.dump(result, f, indent=2)
         print(f"\nPrediction saved to {args.output}")
+    
+    # Display battle visualization with Pokemon sprites if requested
+    if args.show_sprites or args.save_image:
+        team1_ids = [p['id'] for p in result['team1']]
+        team2_ids = [p['id'] for p in result['team2']]
+        team1_names = [p['name'] for p in result['team1']]
+        team2_names = [p['name'] for p in result['team2']]
+        
+        print("\nGenerating battle visualization with Pokémon sprites...")
+        battle_fig = display_battle(team1_ids, team1_names, team2_ids, team2_names, result)
+        
+        # Save the visualization if requested
+        if args.save_image:
+            plt.savefig(args.save_image, dpi=300, bbox_inches='tight')
+            print(f"Battle visualization saved to {args.save_image}")
+        
+        # Show the visualization if requested
+        if args.show_sprites:
+            plt.show()
 
 if __name__ == "__main__":
     main() 
